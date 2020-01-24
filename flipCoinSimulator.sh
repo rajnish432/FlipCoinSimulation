@@ -1,27 +1,55 @@
-#! /bin/bash -x 
+#! /bin/bash 
 
 echo "Welcome to FlipCoinSimulator";
-read -p "Enter the number of Coin flips: " num
-heads=0;
-tails=0;
-declare -A singleCoinFace
 
 function coinflip()
 {
-for (( i=0; i<$num; i++ ))
-do
-if [[ $((RANDOM%2)) -eq 0 ]]
-then
-	((heads++))
-	singleCoinFace[Heads]=$heads
-else
-	((tails++))
-	singleCoinFace[Tails]=$tails
-fi
-done
-percentageOfHeads=$((${singleCoinFace[Heads]}*100/$num))
-percentageOfTails=$((${singleCoinFace[Tails]}*100/$num))
+	for (( i=0; i<$1; i++ ))
+	do
+		key=""
+		for (( j=0; j<$2; j++ ))
+		do
+			if [[ $((RANDOM%2)) -eq 0 ]]
+			then
+				key+=H;
+			else
+				key+=T;
+			fi
+		done
+		countUpdate $key
+	done
 }
-coinflip
-echo "Percentage of Heads: $percentageOfHeads"
-echo "Percentage of Tails: $percentageOfTails"
+
+function countUpdate()
+{
+	coinFace[$1]=$((${coinFace[$1]}+1))
+}
+
+function percentage()
+{
+	for i in ${!coinFace[@]}
+	do
+		coinFace[$i]=$((coinFace[$i]*100/$num))
+	done
+}
+read -p "Enter CoinFlip(y/n): " enter
+
+while [[ $enter == "y" ]]
+do
+	read -p "Enter the number of Coin flips and Coins: " num coins
+		declare -A coinFace
+		case $coins in
+			1)
+				coinflip $num $coins;;
+			2)
+				coinflip $num $coins;;
+			*)
+				echo "Invalid Input(please enter value between 1-2)"
+		esac
+	echo "Number of Keys: ${!coinFace[@]}"
+	echo "Number of Coin flips: " ${coinFace[@]}
+	percentage
+	echo "Percentage: "${coinFace[@]}
+	unset coinFace[@]
+	read -p "Do you want to continue(y/n): " enter
+done
