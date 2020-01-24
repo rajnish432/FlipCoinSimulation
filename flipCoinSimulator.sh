@@ -43,8 +43,10 @@ do
 				coinflip $num $coins;;
 			2)
 				coinflip $num $coins;;
+			3)
+				coinflip $num $coins;;
 			*)
-				echo "Invalid Input(please enter value between 1-2)"
+				echo "Invalid Input(please enter value between 1-3)"
 		esac
 	echo "Number of Keys: ${!coinFace[@]}"
 	echo "Number of Coin flips: " ${coinFace[@]}
