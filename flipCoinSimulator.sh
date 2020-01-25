@@ -29,11 +29,20 @@ function percentage()
 {
 	for i in ${!coinFace[@]}
 	do
-		coinFace[$i]=$((coinFace[$i]*100/$num))
+ 		coinFace[$i]=$((coinFace[$i]*100/$num))
 	done
 }
-read -p "Enter CoinFlip(y/n): " enter
 
+function Sorting()
+{
+	echo "Winning Combination percentage: "
+	for i in ${!coinFace[@]}
+	do
+		echo "$i ${coinFace[$i]}"
+	done | sort -k2 -rn | head -1
+}
+
+read -p "Enter CoinFlip(y/n): " enter
 while [[ $enter == "y" ]]
 do
 	read -p "Enter the number of Coin flips and Coins: " num coins
@@ -52,6 +61,7 @@ do
 	echo "Number of Coin flips: " ${coinFace[@]}
 	percentage
 	echo "Percentage: "${coinFace[@]}
+	Sorting
 	unset coinFace[@]
 	read -p "Do you want to continue(y/n): " enter
 done
